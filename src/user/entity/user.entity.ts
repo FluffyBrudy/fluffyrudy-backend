@@ -23,4 +23,7 @@ export class User {
     length: Schema.password.max * 2,
   })
   password: string;
+
+  @Column({ name: 'is_admin', type: 'boolean', default: false })
+  isAdmin: false;
 }
