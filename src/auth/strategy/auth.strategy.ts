@@ -2,7 +2,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Tpayload } from '../auth.service';
 import { UserService } from 'src/user/user.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AuthenticationStrategy extends PassportStrategy(
   Strategy,
   'auth-strategy',

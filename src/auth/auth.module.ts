@@ -4,14 +4,17 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
+import { AuthenticationStrategy } from './strategy/auth.strategy';
 
 @Module({
   imports: [PassportModule, UserModule],
   controllers: [AuthController],
   providers: [
     AuthService,
+    AuthenticationStrategy,
     {
       provide: 'ACCESS_JWT',
+
       useFactory: () => {
         return new JwtService({
           secret: process.env.JWT_ACCESS_TOKEN_SECRET,

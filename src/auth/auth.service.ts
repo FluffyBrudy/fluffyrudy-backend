@@ -19,11 +19,11 @@ const HASH_ROUNDS = 12;
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly userService: UserService,
     @Inject('ACCESS_JWT') private readonly accessJwtService: JwtService,
     @Inject('REFRESH_JWT') private readonly refreshJwtService: JwtService,
-    private readonly logger: Logger,
   ) {}
 
   async validateUser(
