@@ -69,7 +69,7 @@ export class AuthController {
 
   @Post('logout')
   logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('refreshToke', {
+    response.clearCookie('refreshToken', {
       sameSite: 'none',
       secure: true,
       httpOnly: process.env.NODE_ENV === 'production',
