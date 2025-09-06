@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -9,7 +10,7 @@ import { compare, hash } from 'bcryptjs';
 import { User } from 'src/user/entity/user.entity';
 import { CreateUserFields, UserService } from 'src/user/user.service';
 
-type Tpayload = { sub: User['id']; email: User['email'] };
+export type Tpayload = { sub: User['id']; email: User['email'] };
 type SafeUser = Pick<User, 'id' | 'email'>;
 type LoginResult = SafeUser & { accessToken: string };
 type LoginResultWithRefresh = LoginResult & { refreshToken: string };
@@ -20,7 +21,8 @@ const HASH_ROUNDS = 12;
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    @Inject('ACCESS_JWT') private readonly accessJwtService: JwtService,
+    @Inject('REFRESH_JWT') private readonly refreshJwtService: JwtService,
     private readonly logger: Logger,
   ) {}
 
@@ -63,10 +65,7 @@ export class AuthService {
     includeRefreshToken?: boolean,
   ): LoginResult | LoginResultWithRefresh {
     const payload = { sub: user.id, email: user.email };
-    const accessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-      expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
-    });
+    const accessToken = this.accessJwtService.sign(payload);
     const safeUser = {
       id: user.id,
       email: user.email,
@@ -74,20 +73,20 @@ export class AuthService {
     if (!includeRefreshToken) {
       return { accessToken, ...safeUser };
     } else {
-      const refreshToken = this.jwtService.sign(payload, {
-        secret: process.env.JWT_REFRESH_TOKEN_SECRET,
-        expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
-      });
+      const refreshToken = this.refreshJwtService.sign(payload);
       return { accessToken, refreshToken, ...safeUser };
     }
   }
 
   async verifyRefreshToken(token: string) {
     try {
-      const verifiedToken = await this.jwtService.verifyAsync<Tpayload>(token, {
-        ignoreExpiration: false,
-        ignoreNotBefore: true,
-      });
+      const verifiedToken = await this.refreshJwtService.verifyAsync<Tpayload>(
+        token,
+        {
+          ignoreExpiration: false,
+          ignoreNotBefore: true,
+        },
+      );
       return { payload: verifiedToken, error: null } as const;
     } catch (error) {
       this.logger.error((error as Error).message);
