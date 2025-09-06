@@ -3,8 +3,11 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { JwtService } from '@nestjs/jwt';
 import { AuthenticationStrategy } from './strategy/auth.strategy';
+import {
+  JWTAccessTokenProvider,
+  JWTRefreshTokenProvider,
+} from './provider/provider';
 
 @Module({
   imports: [PassportModule, UserModule],
@@ -12,25 +15,8 @@ import { AuthenticationStrategy } from './strategy/auth.strategy';
   providers: [
     AuthService,
     AuthenticationStrategy,
-    {
-      provide: 'ACCESS_JWT',
-
-      useFactory: () => {
-        return new JwtService({
-          secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-          signOptions: { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN },
-        });
-      },
-    },
-    {
-      provide: 'REFRESH_JWT',
-      useFactory: () => {
-        return new JwtService({
-          secret: process.env.JWT_REFRESH_TOKEN_SECRET,
-          signOptions: { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN },
-        });
-      },
-    },
+    JWTAccessTokenProvider,
+    JWTRefreshTokenProvider,
   ],
 })
 export class AuthModule {}
