@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-@Entity('discussion', { schema: 'markdown' })
+@Entity('discussion')
 export class Discussion {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
@@ -15,10 +15,16 @@ export class Discussion {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('character varying', { name: 'post_slug', length: 255 })
-  post_slug: string;
+  @Column('character varying', { name: 'post_id', length: 255 })
+  postId: number;
 
-  @ManyToOne(() => User)
+  @Column('timestamptz', { name: 'created_at', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @Column('timestamptz', { name: 'updatedAt', default: () => 'NOW()' })
+  updatedAt: Date;
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   userId: number;
 }

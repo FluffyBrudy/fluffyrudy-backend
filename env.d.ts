@@ -15,6 +15,8 @@ declare global {
       CSRF_TOKEN_SECRET: string;
       CSRF_TOKEN_EXPIRES_IN: string;
       NODE_ENV: string;
+
+      BLOG_API_URL: string;
     }
   }
 }
