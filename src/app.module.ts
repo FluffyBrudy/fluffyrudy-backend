@@ -12,7 +12,7 @@ import { ContactModule } from './contact/contact.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot(datasource.options),
+    TypeOrmModule.forRoot({ ...datasource.options, autoLoadEntities: true }),
     UserModule,
     AuthModule,
     DiscussionModule,
