@@ -9,6 +9,6 @@ export const datasource = new DataSource({
     __dirname + '/**/*.entity{.ts,.js}',
     process.cwd() + '/dist/**/*.entity.js',
   ],
-  migrations: ['dist/migrations/*.js'],
+  migrations: ['src/migrations/*.ts'],
   migrationsTableName: 'migration',
 });
