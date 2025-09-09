@@ -1,4 +1,4 @@
-import { EMAIL, MESSAGE, SUBJECT, USERNAME } from 'src/constants/schema';
+import { EMAIL, MESSAGE, SUBJECT, USERNAME } from '../../constants/schema';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'contact' })

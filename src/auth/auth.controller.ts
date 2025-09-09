@@ -10,8 +10,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterUserDto } from 'src/dto/register.dto';
-import { LoginUserDto } from 'src/dto/login.dto';
+import { RegisterUserDto } from '../dto/register.dto';
+import { LoginUserDto } from '../dto/login.dto';
 import type { Request, Response } from 'express';
 import { Public } from './decorator/route.decorator';
 

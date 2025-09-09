@@ -1,5 +1,5 @@
 import { IsString, IsStrongPassword, Length } from 'class-validator';
-import { Schema } from 'src/user/constants';
+import { Schema } from '../user/constants';
 
 export class LoginUserDto {
   @IsString()

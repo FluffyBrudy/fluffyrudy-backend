@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
-import { EMAIL, MESSAGE, SUBJECT, USERNAME } from 'src/constants/schema';
+import { EMAIL, MESSAGE, SUBJECT, USERNAME } from '../../constants/schema';
 
 export class CreateContactDto {
   @IsString()

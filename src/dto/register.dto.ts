@@ -1,5 +1,5 @@
 import { IsString, Length } from 'class-validator';
-import { Schema } from 'src/user/constants';
+import { Schema } from '../user/constants';
 import { LoginUserDto } from './login.dto';
 
 export class RegisterUserDto extends LoginUserDto {

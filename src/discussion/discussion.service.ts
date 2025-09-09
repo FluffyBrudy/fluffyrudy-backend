@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Discussion } from './entities/discussion.entity';
 import { Repository } from 'typeorm';
 import { TAKE_LIMIT } from './constants';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class DiscussionService {

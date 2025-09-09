@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { CreateUserFields, UserService } from 'src/user/user.service';
 
 export type Tpayload = { sub: User['id']; email: User['email'] };
