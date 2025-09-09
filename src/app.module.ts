@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/auth.guard';
 import { DiscussionModule } from './discussion/discussion.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DiscussionModule } from './discussion/discussion.module';
     UserModule,
     AuthModule,
     DiscussionModule,
+    ContactModule,
   ],
   providers: [
     {
