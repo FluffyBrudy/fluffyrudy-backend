@@ -51,7 +51,7 @@ export class AuthController {
   @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@Req() request: Request, @Res() response: Response) {
+  async refreshToken(@Req() request: Request) {
     const refreshToken = request.cookies['refreshToken'] as string | undefined;
     if (!refreshToken) throw new BadRequestException('refresh token missing');
     const { error, payload } =
@@ -64,7 +64,7 @@ export class AuthController {
       },
       false,
     );
-    response.json({ accessToken, email, id });
+    return { accessToken, email, id };
   }
 
   @Post('logout')
