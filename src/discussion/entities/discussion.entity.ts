@@ -28,6 +28,6 @@ export class Discussion {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column('boolean', { name: 'is_parent', default: false })
-  isParent: boolean;
+  @Column('boolean', { name: 'parent_id', default: null })
+  parentId: number;
 }
