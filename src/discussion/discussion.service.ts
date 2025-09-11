@@ -17,7 +17,7 @@ export class DiscussionService {
   async create(userId: User['id'], createDiscussionDto: CreateDiscussionDto) {
     const discussion = this.discussionRepository.create({
       ...createDiscussionDto,
-      userId,
+      user: { id: userId },
     });
     return await this.discussionRepository.save(discussion);
   }
@@ -39,7 +39,7 @@ export class DiscussionService {
     const { affected } = await this.discussionRepository.update(
       {
         id,
-        userId,
+        user: { id: userId },
       },
       { content: updateDiscussionDto.content },
     );
@@ -49,7 +49,7 @@ export class DiscussionService {
 
   async remove(userId: User['id'], id: number) {
     const discussion = await this.discussionRepository.findOne({
-      where: { userId, id },
+      where: { user: { id: userId }, id },
     });
     if (!discussion) throw new NotFoundException('discussion not found');
     return await this.discussionRepository.remove(discussion);

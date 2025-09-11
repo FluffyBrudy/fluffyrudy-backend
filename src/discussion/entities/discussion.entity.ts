@@ -15,7 +15,7 @@ export class Discussion {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('character varying', { name: 'post_id', length: 255 })
+  @Column({ name: 'post_id', type: 'integer' })
   postId: number;
 
   @Column('timestamptz', { name: 'created_at', default: () => 'NOW()' })
@@ -26,5 +26,8 @@ export class Discussion {
 
   @ManyToOne(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  userId: number;
+  user: User;
+
+  @Column('boolean', { name: 'is_parent', default: false })
+  isParent: boolean;
 }
