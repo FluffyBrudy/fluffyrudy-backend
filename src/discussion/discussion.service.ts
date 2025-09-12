@@ -53,7 +53,11 @@ export class DiscussionService {
       { content: updateDiscussionDto.content },
     );
     if (affected === 0) throw new NotFoundException('discussion not found');
-    return { id, userId, content: updateDiscussionDto.content };
+    const discussion = await this.discussionRepository.findOneBy({
+      id,
+      user: { id: userId },
+    });
+    return discussion;
   }
 
   async remove(userId: User['id'], id: number) {
@@ -61,6 +65,7 @@ export class DiscussionService {
       where: { user: { id: userId }, id },
     });
     if (!discussion) throw new NotFoundException('discussion not found');
-    return await this.discussionRepository.remove(discussion);
+    const { id: id_ } = await this.discussionRepository.remove(discussion);
+    return { id: id_ };
   }
 }
