@@ -28,12 +28,12 @@ export class DiscussionController {
     return this.discussionService.create(user.id, createDiscussionDto);
   }
 
-  @Get()
+  @Get(':postId')
   findAll(
     @Query('page', ParseIntPipe) page: number = 0,
-    @Query('postId', ParseIntPipe) postId: number,
+    @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return this.discussionService.findAll(page, postId);
+    return this.discussionService.findAllParent(page, postId);
   }
 
   @Patch(':id')
@@ -50,5 +50,13 @@ export class DiscussionController {
   remove(@Param('id', ParseIntPipe) id: number, @Req() request: Request) {
     const user = request.user as { id: number; email: string };
     return this.discussionService.remove(user.id, id);
+  }
+
+  @Get('reply/:parentId')
+  getReplies(
+    @Param('parentId', ParseIntPipe) parentId: number,
+    @Query('page', ParseIntPipe) page: number = 0,
+  ) {
+    return this.discussionService.findAllReplies(page, parentId);
   }
 }

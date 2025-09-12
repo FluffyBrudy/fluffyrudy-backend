@@ -22,9 +22,18 @@ export class DiscussionService {
     return await this.discussionRepository.save(discussion);
   }
 
-  async findAll(page = 0, postId: Discussion['postId']) {
+  async findAllParent(page = 0, postId: Discussion['postId']) {
     return await this.discussionRepository.find({
-      where: { postId },
+      where: { postId, parentId: undefined },
+      take: TAKE_LIMIT,
+      skip: page * TAKE_LIMIT,
+      order: { id: 'DESC' },
+    });
+  }
+
+  async findAllReplies(page = 0, parentId: Discussion['id']) {
+    return await this.discussionRepository.find({
+      where: { parentId },
       take: TAKE_LIMIT,
       skip: page * TAKE_LIMIT,
       order: { id: 'DESC' },
