@@ -7,13 +7,15 @@ import {
   Param,
   Delete,
   Query,
-  ParseIntPipe,
   Req,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { DiscussionService } from './discussion.service';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
+import { GetDiscussionsParamDto } from './dto/get-discussions.dto';
+import { IdParamDto, PaginationQueryDto } from './dto/shared.dto';
+import { GetRepliesParamDto } from './dto/get-discussion-replies.dto';
 
 @Controller('discussions')
 export class DiscussionController {
@@ -30,33 +32,37 @@ export class DiscussionController {
 
   @Get(':postId')
   findAll(
-    @Query('page', ParseIntPipe) page: number = 0,
-    @Param('postId', ParseIntPipe) postId: number,
+    @Param() param: GetDiscussionsParamDto,
+    @Query() query: PaginationQueryDto,
   ) {
-    return this.discussionService.findAllParent(page, postId);
+    return this.discussionService.findAllParent(query.page, param.postId);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
-    @Req() request: Request,
+    @Param() param: IdParamDto,
     @Body() updateDiscussionDto: UpdateDiscussionDto,
+    @Req() request: Request,
   ) {
     const user = request.user as { id: number; email: string };
-    return this.discussionService.update(id, user.id, updateDiscussionDto);
+    return this.discussionService.update(
+      param.id,
+      user.id,
+      updateDiscussionDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number, @Req() request: Request) {
+  remove(@Param() param: IdParamDto, @Req() request: Request) {
     const user = request.user as { id: number; email: string };
-    return this.discussionService.remove(user.id, id);
+    return this.discussionService.remove(user.id, param.id);
   }
 
   @Get('reply/:parentId')
   getReplies(
-    @Param('parentId', ParseIntPipe) parentId: number,
-    @Query('page', ParseIntPipe) page: number = 0,
+    @Param() param: GetRepliesParamDto,
+    @Query() query: PaginationQueryDto,
   ) {
-    return this.discussionService.findAllReplies(page, parentId);
+    return this.discussionService.findAllReplies(query.page, param.parentId);
   }
 }

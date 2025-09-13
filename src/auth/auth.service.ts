@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 import { User } from '../user/entities/user.entity';
-import { CreateUserFields, UserService } from 'src/user/user.service';
+import { CreateUserFields, FindUserOptions, UserService } from 'src/user/user.service';
 
 export type Tpayload = { sub: User['id']; email: User['email'] };
 type SafeUser = Pick<User, 'id' | 'email'>;
@@ -92,5 +92,12 @@ export class AuthService {
       this.logger.error((error as Error).message);
       return { error: 'invalid token', payload: null } as const;
     }
+  }
+
+  async getAuthorizedUserInfo(user: FindUserOptions) {
+    const userInfo = await this.userService.findUser(user);
+    if (!userInfo) throw new UnauthorizedException("token misused, reporting to admin")
+    const {id, email, username} = userInfo
+    return {id, email, username};
   }
 }

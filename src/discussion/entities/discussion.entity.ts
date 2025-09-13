@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('discussion')
@@ -28,6 +29,13 @@ export class Discussion {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column('boolean', { name: 'parent_id', default: null })
-  parentId: number;
+  @ManyToOne(() => Discussion, (disussion) => disussion.replies, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'parent_id' })
+  parent?: Discussion;
+
+  @OneToMany(() => Discussion, (disussion) => disussion.parent)
+  replies: Discussion[];
 }

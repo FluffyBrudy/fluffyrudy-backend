@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -24,7 +25,16 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() registerUserDto: RegisterUserDto) {
     const user = await this.authService.register(registerUserDto);
+    console.log(user);
     return user;
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async getUser(@Req() request: Request) {
+    const user = request.user as { id: number; email: string };
+    const userInfo = this.authService.getAuthorizedUserInfo(user);
+    return userInfo;
   }
 
   @Public()
@@ -41,7 +51,7 @@ export class AuthController {
     );
     response.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });

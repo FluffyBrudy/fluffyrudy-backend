@@ -3,7 +3,7 @@ import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Discussion } from './entities/discussion.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { TAKE_LIMIT } from './constants';
 import { User } from '../user/entities/user.entity';
 
@@ -24,7 +24,18 @@ export class DiscussionService {
 
   async findAllParent(page = 0, postId: Discussion['postId']) {
     return await this.discussionRepository.find({
-      where: { postId, parentId: undefined },
+      where: { postId, parent: IsNull() },
+      relations: ['user'],
+      select: {
+        id: true,
+        postId: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          username: true,
+        },
+      },
       take: TAKE_LIMIT,
       skip: page * TAKE_LIMIT,
       order: { id: 'DESC' },
@@ -33,7 +44,19 @@ export class DiscussionService {
 
   async findAllReplies(page = 0, parentId: Discussion['id']) {
     return await this.discussionRepository.find({
-      where: { parentId },
+      where: { parent: { id: parentId } },
+      relations: ['user'],
+      select: {
+        id: true,
+        postId: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+        parent: { id: true },
+        user: {
+          username: true,
+        },
+      },
       take: TAKE_LIMIT,
       skip: page * TAKE_LIMIT,
       order: { id: 'DESC' },
