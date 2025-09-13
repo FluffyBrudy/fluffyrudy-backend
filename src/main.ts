@@ -7,7 +7,7 @@ import { config } from 'dotenv';
 config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true});
+  const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: ['http://localhost:3001', 'https://fluffyrudy.vercel.app'],
     credentials: true,
