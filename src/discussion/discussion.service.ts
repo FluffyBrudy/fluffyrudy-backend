@@ -15,8 +15,11 @@ export class DiscussionService {
   ) {}
 
   async create(userId: User['id'], createDiscussionDto: CreateDiscussionDto) {
+    const { content, postId, parentId } = createDiscussionDto;
     const discussion = this.discussionRepository.create({
-      ...createDiscussionDto,
+      content,
+      postId,
+      ...(parentId ? { parent: { id: parentId } } : {}),
       user: { id: userId },
     });
     return await this.discussionRepository.save(discussion);

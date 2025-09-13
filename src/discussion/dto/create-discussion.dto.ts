@@ -12,5 +12,5 @@ export class CreateDiscussionDto {
 
   @IsOptional()
   @IsNumber()
-  parentId: Discussion['id'];
+  parentId?: Discussion['id'];
 }
