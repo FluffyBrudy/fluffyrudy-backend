@@ -12,6 +12,7 @@ async function bootstrap() {
     origin: process.env.ORIGINS.split(','),
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: '*',
   });
   app.setGlobalPrefix('api');
   app.use(cookieParser());
