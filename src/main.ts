@@ -9,7 +9,11 @@ config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3001', 'https://fluffyrudy.vercel.app'],
+    origin: [
+      'http://localhost:3001',
+      'https://fluffyrudy.vercel.app',
+      'https://fluffyrudy.vercel.app/',
+    ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
