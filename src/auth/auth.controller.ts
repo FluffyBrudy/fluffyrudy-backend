@@ -15,6 +15,7 @@ import { RegisterUserDto } from '../dto/register.dto';
 import { LoginUserDto } from '../dto/login.dto';
 import type { Request, Response } from 'express';
 import { Public } from './decorator/route.decorator';
+import ms from 'ms';
 
 @Controller('auth')
 export class AuthController {
@@ -53,7 +54,9 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: ms('7d'),
+      path: '/',
+      partitioned: true,
     });
     return { id, email, accessToken };
   }
@@ -82,7 +85,9 @@ export class AuthController {
     response.clearCookie('refreshToken', {
       sameSite: 'none',
       secure: true,
-      httpOnly: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      partitioned: true,
+      path: '/',
     });
     return { message: 'logout success' };
   }
