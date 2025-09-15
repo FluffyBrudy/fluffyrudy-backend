@@ -41,10 +41,7 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(
-    @Body() loginUserDto: LoginUserDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async login(@Body() loginUserDto: LoginUserDto, @Res() response: Response) {
     const validatedUser = await this.authService.validateUser(loginUserDto);
     const { id, email, accessToken, refreshToken } = this.authService.login(
       validatedUser,
@@ -56,7 +53,7 @@ export class AuthController {
       sameSite: 'none',
       maxAge: ms('7d'),
     });
-    return { id, email, accessToken };
+    response.json({ id, email, accessToken });
   }
 
   @Public()
