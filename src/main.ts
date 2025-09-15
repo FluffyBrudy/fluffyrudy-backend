@@ -12,10 +12,9 @@ async function bootstrap() {
     origin: process.env.ORIGINS.split(','),
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: ['Content-Type', 'Authorization'],
   });
-  app.setGlobalPrefix('api');
   app.use(cookieParser());
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
