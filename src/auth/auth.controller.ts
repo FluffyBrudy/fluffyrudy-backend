@@ -56,7 +56,6 @@ export class AuthController {
       sameSite: 'none',
       maxAge: ms('7d'),
       path: '/',
-      partitioned: true,
     });
     return { id, email, accessToken };
   }
@@ -86,7 +85,6 @@ export class AuthController {
       sameSite: 'none',
       secure: true,
       httpOnly: true,
-      partitioned: true,
       path: '/',
     });
     return { message: 'logout success' };
